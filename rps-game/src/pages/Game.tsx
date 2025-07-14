@@ -24,12 +24,14 @@ export default function Game() {
     setUserChoice(user);
     setComputerChoice(computer);
 
+    const winMap = {
+      rock: "scissors",
+      scissors: "paper",
+      paper: "rock",
+    };
+
     if (user === computer) setResult("Draw");
-    else if (
-      (user === "rock" && computer === "scissors") ||
-      (user === "scissors" && computer === "paper") ||
-      (user === "paper" && computer === "rock")
-    ) {
+    else if (winMap[user] === computer) {
       setResult("You Win!");
     } else {
       setResult("You Lose!");
