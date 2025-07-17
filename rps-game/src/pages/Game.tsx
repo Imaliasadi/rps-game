@@ -1,91 +1,98 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ChoiceButton from "../components/ChoiceButton";
 import rockIcon from "../assets/icon-rock.svg";
 import paperIcon from "../assets/icon-paper.svg";
 import scissorsIcon from "../assets/icon-scissors.svg";
+import TriangleLines from "../components/TriangleLines";
 
 const choices = ["rock", "paper", "scissors"] as const;
 type Choice = (typeof choices)[number];
 
 export default function Game() {
-  const [userChoice, setUserChoice] = useState<Choice | null>(null);
-  const [computerChoice, setComputerChoice] = useState<Choice | null>(null);
-  const [result, setResult] = useState<string>("");
+  const navigate = useNavigate();
+
+  // State to keep track of the score, initialized from localStorage if available
   const [score, setScore] = useState<number>(() => {
     const stored = localStorage.getItem("score");
     return stored ? parseInt(stored) : 0;
   });
 
-  useEffect(() => {
-    localStorage.setItem("score", score.toString());
-  }, [score]);
-
+  // Function to randomly pick a choice for the computer
   function getRandomChoice(): Choice {
     const randomIndex = Math.floor(Math.random() * choices.length);
     return choices[randomIndex];
   }
 
-  function playRound(choice: Choice) {
+  // Main game function called when user makes a choice
+  function playRound(user: Choice) {
     const computer = getRandomChoice();
-    const user = choice;
 
-    setUserChoice(user);
-    setComputerChoice(computer);
-
-    const winMap = {
+    const winMap: Record<Choice, Choice> = {
       rock: "scissors",
       scissors: "paper",
       paper: "rock",
     };
 
-    if (user === computer) setResult("Draw");
-    else if (winMap[user] === computer) {
-      setResult("You Win!");
-      setScore((prev) => prev + 1);
-    } else {
-      setResult("You Lose!");
-      setScore((prev) => prev - 1);
-    }
+    let result = "";
+    if (user === computer) result = "Draw";
+    else if (winMap[user] === computer) result = "You Win!";
+    else result = "You Lose!";
+
+    // Navigate to the results page and send the game data as state
+    navigate("/game/result", {
+      state: { userChoice: user, computerChoice: computer, result, score },
+    });
+  }
+
+  // Reset the score and clear it from localStorage
+  function resetScore() {
+    setScore(0);
+    localStorage.removeItem("score");
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-500 to-indigo-700 text-white flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-center p-4">
       <div className="bg-white text-black rounded-lg px-6 py-2 mb-8 shadow-md">
         <h1 className="text-xl font-bold">Score: {score}</h1>
       </div>
 
-      {userChoice === null ? (
-        <div className="grid grid-cols-2 gap-6 sm:grid-cols-3">
-          <ChoiceButton icon={rockIcon} label="rock" onClick={() => playRound("rock")} />
+      <div className="mx-auto grid grid-cols-3 grid-rows-3 gap-4 relative z-0">
+        <TriangleLines />
+        <div className="col-start-2 row-start-3 flex justify-center">
           <ChoiceButton
             icon={paperIcon}
             label="paper"
             onClick={() => playRound("paper")}
+            color="border-[#5471f3]"
           />
+        </div>
+
+        <div className="col-start-3 row-start-1 flex justify-center">
+          <ChoiceButton
+            icon={rockIcon}
+            label="rock"
+            onClick={() => playRound("rock")}
+            color="border-[#de3a5a]"
+          />
+        </div>
+
+        <div className="col-start-1 row-start-1 flex justify-center">
           <ChoiceButton
             icon={scissorsIcon}
             label="scissors"
             onClick={() => playRound("scissors")}
+            color="border-[#eca81e]"
           />
         </div>
-      ) : (
-        <div className="text-center space-y-4">
-          <p className="text-2xl font-semibold">You chose: {userChoice}</p>
-          <p className="text-2xl font-semibold">Computer chose: {computerChoice}</p>
-          <p className="text-3xl font-bold">{result}</p>
+      </div>
 
-          <button
-            className="mt-4 bg-white text-indigo-700 px-4 py-2 rounded hover:bg-indigo-100 transition"
-            onClick={() => {
-              setUserChoice(null);
-              setComputerChoice(null);
-              setResult("");
-            }}
-          >
-            Play Again
-          </button>
-        </div>
-      )}
+      <button
+        className="bg-white text-indigo-700 px-4 py-2 rounded hover:bg-indigo-100 transition mt-6 cursor-pointer"
+        onClick={resetScore}
+      >
+        Reset score
+      </button>
     </div>
   );
 }
