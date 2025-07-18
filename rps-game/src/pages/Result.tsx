@@ -1,58 +1,55 @@
-import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import rock from "../assets/icon-rock.svg";
 import paper from "../assets/icon-paper.svg";
 import scissors from "../assets/icon-scissors.svg";
+import spock from "../assets/icon-spock.svg";
+import lizard from "../assets/icon-lizard.svg";
+import ScoreBoard from "../components/ScoreBoard";
 
-type Choice = "rock" | "paper" | "scissors";
-
+type Choice = "rock" | "paper" | "scissors" | "spock" | "lizard";
 interface LocationState {
   userChoice: Choice;
   computerChoice: Choice;
   result: string;
-  score: number;
 }
 
 export default function Result() {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state } = useLocation() as { state: LocationState };
 
-  const { userChoice, computerChoice, result, score } = state as LocationState;
-
-  // Update the score in localStorage based on the result when component mounts
-  useEffect(() => {
-    let newScore = score;
-    if (result === "You Win!") newScore = score + 1;
-    else if (result === "You Lose!") newScore = score - 1;
-
-    localStorage.setItem("score", newScore.toString());
-  }, [result, score]);
-
-  // Redirect to /game if no state is provided (e.g., user opens this page directly)
   if (!state) {
     navigate("/game");
     return null;
   }
-  const iconMap = {
-    rock: rock,
-    paper: paper,
-    scissors: scissors,
-  };
-  return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-center p-4 space-y-6">
-      <h2 className="text-4xl font-bold">{result}</h2>
+  const { userChoice, computerChoice, result } = state;
 
+  const iconMap: Record<Choice, string> = { rock, paper, scissors, spock, lizard };
+  const borderColorMap: Record<Choice, string> = {
+    rock: "border-[#de3a5a]",
+    paper: "border-[#5471f3]",
+    scissors: "border-[#eca81e]",
+    lizard: "border-[#8c5de5]",
+    spock: "border-[#40b9ce]",
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-between p-4 space-y-6">
+      <ScoreBoard />
+      <h2 className="text-4xl font-bold">{result}</h2>
       <div className="flex justify-center space-x-20">
         <div className="text-center">
           <p className="text-xl mb-2">You Picked</p>
-          <div className="inline-block p-6 border-8 rounded-full border-white">
+          <div
+            className={`inline-block p-6 border-8 rounded-full bg-white ${borderColorMap[userChoice]}`}
+          >
             <img src={iconMap[userChoice]} alt={userChoice} className="w-24 h-24" />
           </div>
         </div>
-
         <div className="text-center">
           <p className="text-xl mb-2">The House Picked</p>
-          <div className="inline-block p-6 border-8 rounded-full border-white">
+          <div
+            className={`inline-block p-6 border-8 rounded-full bg-white ${borderColorMap[computerChoice]}`}
+          >
             <img
               src={iconMap[computerChoice]}
               alt={computerChoice}
@@ -61,7 +58,6 @@ export default function Result() {
           </div>
         </div>
       </div>
-
       <button
         className="bg-white text-indigo-700 px-8 py-3 rounded hover:bg-indigo-100 transition"
         onClick={() => navigate("/game")}

@@ -1,83 +1,52 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ChoiceButton from "../components/ChoiceButton";
+import ScoreBoard from "../components/ScoreBoard";
 import rockIcon from "../assets/icon-rock.svg";
 import paperIcon from "../assets/icon-paper.svg";
 import scissorsIcon from "../assets/icon-scissors.svg";
-import TriangleLines from "../components/TriangleLines";
+import lizardIcon from "../assets/icon-lizard.svg";
+import spockIcon from "../assets/icon-spock.svg";
 
-const choices = ["rock", "paper", "scissors"] as const;
+const choices = ["rock", "paper", "scissors", "lizard", "spock"] as const;
 type Choice = (typeof choices)[number];
 
 export default function Game() {
   const navigate = useNavigate();
 
-  // State to keep track of the score, initialized from localStorage if available
-  const [score, setScore] = useState<number>(() => {
-    const stored = localStorage.getItem("score");
-    return stored ? parseInt(stored) : 0;
-  });
-
-  // Function to randomly pick a choice for the computer
-  function getRandomChoice(): Choice {
+  const getRandomChoice = (): Choice => {
     const randomIndex = Math.floor(Math.random() * choices.length);
     return choices[randomIndex];
-  }
+  };
 
-  // Main game function called when user makes a choice
-  function playRound(user: Choice) {
+  const playRound = (user: Choice) => {
     const computer = getRandomChoice();
-
-    const winMap: Record<Choice, Choice> = {
-      rock: "scissors",
-      scissors: "paper",
-      paper: "rock",
+    const winMap: Record<Choice, Choice[]> = {
+      rock: ["scissors", "lizard"],
+      paper: ["rock", "spock"],
+      scissors: ["paper", "lizard"],
+      lizard: ["spock", "paper"],
+      spock: ["scissors", "rock"],
     };
+    let result = "Draw";
+    if (winMap[user].includes(computer)) result = "You Win!";
+    else if (user !== computer) result = "You Lose!";
 
-    let result = "";
-    if (user === computer) result = "Draw";
-    else if (winMap[user] === computer) result = "You Win!";
-    else result = "You Lose!";
-
-    // Navigate to the results page and send the game data as state
     navigate("/game/result", {
-      state: { userChoice: user, computerChoice: computer, result, score },
+      state: { userChoice: user, computerChoice: computer, result },
     });
-  }
+  };
 
-  // Reset the score and clear it from localStorage
-  function resetScore() {
-    setScore(0);
-    localStorage.removeItem("score");
-  }
+  const resetScore = () => {
+    localStorage.removeItem("youScore");
+    localStorage.removeItem("houseScore");
+    window.dispatchEvent(new Event("storage"));
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-center p-4">
-      <div className="bg-white text-black rounded-lg px-6 py-2 mb-8 shadow-md">
-        <h1 className="text-xl font-bold">Score: {score}</h1>
-      </div>
-
-      <div className="mx-auto grid grid-cols-3 grid-rows-3 gap-4 relative z-0">
-        <TriangleLines />
-        <div className="col-start-2 row-start-3 flex justify-center">
-          <ChoiceButton
-            icon={paperIcon}
-            label="paper"
-            onClick={() => playRound("paper")}
-            color="border-[#5471f3]"
-          />
-        </div>
-
-        <div className="col-start-3 row-start-1 flex justify-center">
-          <ChoiceButton
-            icon={rockIcon}
-            label="rock"
-            onClick={() => playRound("rock")}
-            color="border-[#de3a5a]"
-          />
-        </div>
-
-        <div className="col-start-1 row-start-1 flex justify-center">
+    <div className="min-h-screen flex flex-col items-center justify-between gap-8 bg-gradient-to-b from-[#1f3756] to-[#141539] text-white p-4">
+      <ScoreBoard />
+      <div className="relative w-[260px] h-[260px] sm:w-[380px] sm:h-[380px] bg-[url('./assets/bg-pentagon.svg')] bg-no-repeat bg-center bg-contain flex items-center justify-center">
+        <div className="absolute -top-14 left-1/2 -translate-x-1/2">
           <ChoiceButton
             icon={scissorsIcon}
             label="scissors"
@@ -85,11 +54,42 @@ export default function Game() {
             color="border-[#eca81e]"
           />
         </div>
+        <div className="absolute top-[18%] -left-14">
+          <ChoiceButton
+            icon={spockIcon}
+            label="spock"
+            onClick={() => playRound("spock")}
+            color="border-[#40b9ce]"
+          />
+        </div>
+        <div className="absolute top-[18%] -right-14">
+          <ChoiceButton
+            icon={paperIcon}
+            label="paper"
+            onClick={() => playRound("paper")}
+            color="border-[#5471f3]"
+          />
+        </div>
+        <div className="absolute -bottom-10 -left-3">
+          <ChoiceButton
+            icon={lizardIcon}
+            label="lizard"
+            onClick={() => playRound("lizard")}
+            color="border-[#8c5de5]"
+          />
+        </div>
+        <div className="absolute -bottom-10 -right-3">
+          <ChoiceButton
+            icon={rockIcon}
+            label="rock"
+            onClick={() => playRound("rock")}
+            color="border-[#de3a5a]"
+          />
+        </div>
       </div>
-
       <button
-        className="bg-white text-indigo-700 px-4 py-2 rounded hover:bg-indigo-100 transition mt-6 cursor-pointer"
         onClick={resetScore}
+        className="bg-white text-indigo-700 px-4 py-2 rounded hover:bg-indigo-100 transition"
       >
         Reset score
       </button>
