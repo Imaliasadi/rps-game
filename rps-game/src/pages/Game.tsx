@@ -1,27 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../components/GameBoard";
-
-const choices = ["rock", "paper", "scissors", "lizard", "spock"] as const;
-type Choice = (typeof choices)[number];
+import { getRandomChoice, resetScore, winMap } from "../utiles/GameLogic";
+import { type Choice } from "../data/choices";
 
 export default function Game() {
   const navigate = useNavigate();
 
-  const getRandomChoice = (): Choice => {
-    const randomIndex = Math.floor(Math.random() * choices.length);
-    return choices[randomIndex];
-  };
-
   const playRound = (user: Choice) => {
     const computer = getRandomChoice();
-    const winMap: Record<Choice, Choice[]> = {
-      rock: ["scissors", "lizard"],
-      paper: ["rock", "spock"],
-      scissors: ["paper", "lizard"],
-      lizard: ["spock", "paper"],
-      spock: ["scissors", "rock"],
-    };
+
     let result = "Draw";
     if (winMap[user].includes(computer)) result = "You Win!";
     else if (user !== computer) result = "You Lose!";
@@ -29,12 +17,6 @@ export default function Game() {
     navigate("/game/result", {
       state: { userChoice: user, computerChoice: computer, result },
     });
-  };
-
-  const resetScore = () => {
-    localStorage.removeItem("youScore");
-    localStorage.removeItem("houseScore");
-    window.dispatchEvent(new Event("storage"));
   };
 
   return (

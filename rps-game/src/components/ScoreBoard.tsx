@@ -29,6 +29,7 @@ function ScoreBoard() {
 
     localStorage.setItem("youScore", newYouScore.toString());
     localStorage.setItem("houseScore", newHouseScore.toString());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result]);
 
   useEffect(() => {
