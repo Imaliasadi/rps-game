@@ -3,12 +3,13 @@ type Props = {
   label: string;
   onClick?: () => void;
   color: string;
+  position: string;
 };
 
-export default function ChoiceButton({ icon, label, onClick, color }: Props) {
+export default function ChoiceButton({ icon, label, onClick, color, position }: Props) {
   return (
     <button
-      className={`w-32 h-32 shadow-lg items-center hover:scale-105 transition-transform flex justify-center rounded-full border-8 bg-white ${color}`}
+      className={`w-32 h-32 shadow-lg items-center hover:scale-105 transition-transform flex justify-center rounded-full border-8 bg-white ${color} ${position}`}
       onClick={onClick}
       aria-label={label}
     >

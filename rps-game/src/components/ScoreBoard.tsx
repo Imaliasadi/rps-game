@@ -52,12 +52,10 @@ function ScoreBoard() {
 
       <div className="bg-white rounded-lg flex flex-col items-center px-6 py-2 text-black">
         <span className="text-gray-500 text-sm font-bold tracking-widest uppercase">
-          Score
+          Score Board
         </span>
         <div className="text-xl font-bold">
-          <span className="bg-[#40b9ce] px-1 rounded-sm">You</span>
-          {youScore} : {houseScore}
-          <span className="bg-[#de3a5a] px-1 rounded-sm">House</span>
+          You {youScore} : {houseScore} House
         </div>
       </div>
     </div>
