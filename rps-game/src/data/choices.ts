@@ -4,6 +4,10 @@ import scissorsIcon from "../assets/icon-scissors.svg";
 import lizardIcon from "../assets/icon-lizard.svg";
 import spockIcon from "../assets/icon-spock.svg";
 
+/**
+ * Centralized data for all game choices.
+ * Each choice includes its key, icon, border color, label, and pentagon position.
+ */
 export const choices = [
   {
     key: "rock",
@@ -42,4 +46,5 @@ export const choices = [
   },
 ] as const;
 
+// Type for valid choice keys
 export type Choice = (typeof choices)[number]["key"];

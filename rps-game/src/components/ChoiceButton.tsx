@@ -1,3 +1,12 @@
+/**
+ * ChoiceButton component renders a single game choice (rock, paper, etc.)
+ * Props:
+ * - icon: SVG icon for the choice
+ * - label: text label for accessibility
+ * - onClick: handler when the button is clicked
+ * - color: Tailwind border color class
+ * - position: Tailwind absolute positioning class
+ */
 type Props = {
   icon: string;
   label: string;
@@ -9,7 +18,7 @@ type Props = {
 export default function ChoiceButton({ icon, label, onClick, color, position }: Props) {
   return (
     <button
-      className={`w-32 h-32 shadow-lg items-center hover:scale-105 transition-transform flex justify-center rounded-full border-8 bg-white ${color} ${position}`}
+      className={`sm:w-32 sm:h-32 w-25 h-25 shadow-lg items-center hover:scale-105 transition-transform flex justify-center rounded-full border-8 bg-white ${color} ${position}`}
       onClick={onClick}
       aria-label={label}
     >

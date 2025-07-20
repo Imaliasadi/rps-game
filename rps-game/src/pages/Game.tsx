@@ -3,26 +3,45 @@ import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../components/GameBoard";
 import { getRandomChoice, resetScore, winMap } from "../utiles/GameLogic";
 import { type Choice } from "../data/choices";
+import Loading from "../components/Loading";
+import { useState } from "react";
 
+/**
+ * Game page: main gameplay logic and layout.
+ * Handles user choice, computes result, and navigates to the result page.
+ */
 export default function Game() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
+  // Handles a round: determines computer choice, computes result, and navigates to result page
   const playRound = (user: Choice) => {
     const computer = getRandomChoice();
-
+    setIsLoading(true);
     let result = "Draw";
     if (winMap[user].includes(computer)) result = "You Win!";
     else if (user !== computer) result = "You Lose!";
 
-    navigate("/game/result", {
-      state: { userChoice: user, computerChoice: computer, result },
-    });
+    sessionStorage.removeItem("scoreProcessed");
+    setTimeout(() => {
+      setIsLoading(false);
+      navigate("/game/result", {
+        state: { userChoice: user, computerChoice: computer, result },
+      });
+    }, 3000);
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between gap-8 bg-gradient-to-b from-[#1f3756] to-[#141539] text-white p-4">
+      {/* ScoreBoard displays the current scores */}
       <ScoreBoard />
-      <GameBoard playRound={playRound} />
+      {isLoading ? (
+        <Loading message="THE HOUSE IS CHOOSING..." />
+      ) : (
+        <GameBoard playRound={playRound} />
+      )}
+
+      {/* Button to reset the score */}
       <button
         onClick={resetScore}
         className="bg-white text-indigo-700 px-4 py-2 rounded hover:bg-indigo-100 transition"
