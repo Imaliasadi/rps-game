@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import ScoreBoard from "../components/ScoreBoard";
 import { choices, type Choice } from "../data/choices";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 
 // Interface for the navigation state passed from the Game page
 interface LocationState {
@@ -16,6 +18,7 @@ function getChoiceData(key: Choice) {
 }
 
 export default function Result() {
+  const { width, height } = useWindowSize();
   const navigate = useNavigate();
   // Get the state passed from the previous page (Game)
   const { state } = useLocation() as { state: LocationState };
@@ -33,6 +36,7 @@ export default function Result() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-between p-4 space-y-6">
+      {result === "You Win!" && <Confetti width={width} height={height} />}
       {/* ScoreBoard displays the current scores */}
       <ScoreBoard />
 
@@ -60,7 +64,7 @@ export default function Result() {
       <p className="text-6xl font-extrabold uppercase">{result}</p>
       {/* Button to play again, navigates back to the game */}
       <button
-        className="bg-white text-indigo-700 px-8 py-3 rounded hover:bg-indigo-100 transition"
+        className="bg-transparent text-white px-4 py-2 rounded hover:bg-white hover:text-black transition border-2 border-amber-50"
         onClick={() => navigate("/game")}
       >
         Play Again

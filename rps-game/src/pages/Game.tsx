@@ -5,6 +5,7 @@ import { getRandomChoice, resetScore, winMap } from "../utiles/GameLogic";
 import { type Choice } from "../data/choices";
 import Loading from "../components/Loading";
 import { useState } from "react";
+import RulesModal from "../components/RulesModal";
 
 /**
  * Game page: main gameplay logic and layout.
@@ -13,6 +14,7 @@ import { useState } from "react";
 export default function Game() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   // Handles a round: determines computer choice, computes result, and navigates to result page
   const playRound = (user: Choice) => {
@@ -28,7 +30,7 @@ export default function Game() {
       navigate("/game/result", {
         state: { userChoice: user, computerChoice: computer, result },
       });
-    }, 3000);
+    }, 1500);
   };
 
   return (
@@ -42,12 +44,21 @@ export default function Game() {
       )}
 
       {/* Button to reset the score */}
-      <button
-        onClick={resetScore}
-        className="bg-white text-indigo-700 px-4 py-2 rounded hover:bg-indigo-100 transition"
-      >
-        Reset score
-      </button>
+      <div className="flex content-between gap-3">
+        <button
+          onClick={resetScore}
+          className="bg-transparent text-white px-4 py-2 rounded hover:bg-white hover:text-black transition border-2 border-amber-50"
+        >
+          Reset score
+        </button>
+        <button
+          onClick={() => setShowModal(true)}
+          className="bg-transparent text-white px-4 py-2 rounded hover:bg-white hover:text-black transition border-2 border-amber-50"
+        >
+          Rules
+        </button>
+      </div>
+      {showModal && <RulesModal onClose={() => setShowModal(false)} />}
     </div>
   );
 }
