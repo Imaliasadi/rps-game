@@ -12,9 +12,3 @@ export const getRandomChoice = (): Choice => {
   const randomIndex = Math.floor(Math.random() * choices.length);
   return choices[randomIndex].key;
 };
-
-export const resetScore = () => {
-  localStorage.removeItem("youScore");
-  localStorage.removeItem("houseScore");
-  window.dispatchEvent(new Event("storage"));
-};

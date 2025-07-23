@@ -1,11 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../components/GameBoard";
-import { getRandomChoice, resetScore, winMap } from "../utiles/GameLogic";
+import { getRandomChoice, winMap } from "../utiles/GameLogic";
 import { type Choice } from "../data/choices";
 import Loading from "../components/Loading";
 import { useState } from "react";
 import RulesModal from "../components/RulesModal";
+import WarningModal from "../components/WarningModal";
 
 /**
  * Game page: main gameplay logic and layout.
@@ -15,6 +16,7 @@ export default function Game() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [showWarn, setShowWarn] = useState(false);
 
   // Handles a round: determines computer choice, computes result, and navigates to result page
   const playRound = (user: Choice) => {
@@ -33,6 +35,12 @@ export default function Game() {
     }, 1500);
   };
 
+  const resetScore = () => {
+    localStorage.removeItem("youScore");
+    localStorage.removeItem("houseScore");
+    window.dispatchEvent(new Event("storage"));
+    setShowWarn(false);
+  };
   return (
     <div className="min-h-screen flex flex-col items-center justify-between gap-8 bg-gradient-to-b from-[#1f3756] to-[#141539] text-white p-4">
       {/* ScoreBoard displays the current scores */}
@@ -46,7 +54,7 @@ export default function Game() {
       {/* Button to reset the score */}
       <div className="flex content-between gap-3">
         <button
-          onClick={resetScore}
+          onClick={() => setShowWarn(true)}
           className="bg-transparent text-white px-4 py-2 rounded hover:bg-white hover:text-black transition border-2 border-amber-50"
         >
           Reset score
@@ -59,6 +67,9 @@ export default function Game() {
         </button>
       </div>
       {showModal && <RulesModal onClose={() => setShowModal(false)} />}
+      {showWarn && (
+        <WarningModal onClose={() => setShowWarn(false)} onReset={resetScore} />
+      )}
     </div>
   );
 }

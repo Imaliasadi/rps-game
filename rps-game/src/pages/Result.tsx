@@ -6,9 +6,9 @@ import { winVariants, loseVariants, drawVariants } from "../animations/HeadAnima
 import WinAnimation from "../animations/winAnimation";
 import LoseAnimation from "../animations/loseAnimation";
 import DrawAnimation from "../animations/drawAnimation";
-import WinnerPlayer from "../components/Winner";
 import RulesModal from "../components/RulesModal";
 import { useState } from "react";
+import DropInIcon from "../animations/PickedChoicesAnimations";
 
 interface LocationState {
   userChoice: Choice;
@@ -48,71 +48,21 @@ export default function Result() {
       <ScoreBoard />
 
       <div className="flex justify-center space-x-20 z-10">
-        {result === "You Win!" ? (
-          <>
-            {/* loser: house on left */}
-            <div className="text-center">
-              <p className="text-xl font-bold mb-2 uppercase">The House Picked</p>
-              <div
-                className={`inline-block p-6 border-8 rounded-full bg-white ${computerData.color}`}
-              >
-                <img
-                  src={computerData.icon}
-                  alt={computerData.label}
-                  className="w-24 h-24"
-                />
-              </div>
-            </div>
-            {/* winner: you on right */}
-            <WinnerPlayer
-              label="You Picked"
-              icon={userData.icon}
-              color={userData.color}
-            />
-          </>
-        ) : result === "You Lose!" ? (
-          <>
-            {/* loser: you on left */}
-            <div className="text-center">
-              <p className="text-xl font-bold mb-2 uppercase">You Picked</p>
-              <div
-                className={`inline-block p-6 border-8 rounded-full bg-white ${userData.color}`}
-              >
-                <img src={userData.icon} alt={userData.label} className="w-24 h-24" />
-              </div>
-            </div>
-            {/* winner: house on right */}
-            <WinnerPlayer
-              label="The House Picked"
-              icon={computerData.icon}
-              color={computerData.color}
-            />
-          </>
-        ) : (
-          <>
-            {/* draw: same layout as before */}
-            <div className="text-center">
-              <p className="text-xl font-bold mb-2 uppercase">You Picked</p>
-              <div
-                className={`inline-block p-6 border-8 rounded-full bg-white ${userData.color}`}
-              >
-                <img src={userData.icon} alt={userData.label} className="w-24 h-24" />
-              </div>
-            </div>
-            <div className="text-center">
-              <p className="text-xl font-bold mb-2 uppercase">The House Picked</p>
-              <div
-                className={`inline-block p-6 border-8 rounded-full bg-white ${computerData.color}`}
-              >
-                <img
-                  src={computerData.icon}
-                  alt={computerData.label}
-                  className="w-24 h-24"
-                />
-              </div>
-            </div>
-          </>
-        )}
+        <>
+          <DropInIcon
+            label="You Picked"
+            icon={userData.icon}
+            color={userData.color}
+            delay={0}
+          />
+
+          <DropInIcon
+            label="The House Picked"
+            icon={computerData.icon}
+            color={computerData.color}
+            delay={1}
+          />
+        </>
       </div>
 
       <motion.h2
