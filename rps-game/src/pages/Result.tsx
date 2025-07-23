@@ -41,7 +41,7 @@ export default function Result() {
   };
 
   return (
-    <div className="relative bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-between p-4 space-y-4 overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-between p-4 space-y-4 overflow-hidden">
       {/* animations */}
       {renderAnimation()}
 
