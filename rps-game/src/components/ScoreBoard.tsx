@@ -31,7 +31,7 @@ function ScoreBoard() {
     let newYouScore = parseInt(localStorage.getItem("youScore") || "0");
     let newHouseScore = parseInt(localStorage.getItem("houseScore") || "0");
 
-    if (result === "You Win!") newYouScore += 1;
+    if (result === "You Won!") newYouScore += 1;
     else if (result === "You Lose!") newHouseScore += 1;
 
     setYouScore(newYouScore);

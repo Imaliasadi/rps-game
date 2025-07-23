@@ -35,7 +35,7 @@ export default function Result() {
   const computerData = getChoiceData(computerChoice);
 
   const renderAnimation = () => {
-    if (result === "You Win!") return <WinAnimation />;
+    if (result === "You Won!") return <WinAnimation />;
     if (result === "You Lose!") return <LoseAnimation />;
     return <DrawAnimation />;
   };
@@ -67,7 +67,7 @@ export default function Result() {
 
       <motion.h2
         variants={
-          result === "You Win!"
+          result === "You Won!"
             ? winVariants
             : result === "You Lose!"
             ? loseVariants

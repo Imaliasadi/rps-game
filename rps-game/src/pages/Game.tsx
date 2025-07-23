@@ -23,7 +23,7 @@ export default function Game() {
     const computer = getRandomChoice();
     setIsLoading(true);
     let result = "Draw";
-    if (winMap[user].includes(computer)) result = "You Win!";
+    if (winMap[user].includes(computer)) result = "You Won!";
     else if (user !== computer) result = "You Lose!";
 
     sessionStorage.removeItem("scoreProcessed");
@@ -32,7 +32,7 @@ export default function Game() {
       navigate("/game/result", {
         state: { userChoice: user, computerChoice: computer, result },
       });
-    }, 1500);
+    }, 1000);
   };
 
   const resetScore = () => {
