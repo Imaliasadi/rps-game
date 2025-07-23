@@ -42,7 +42,7 @@ export default function Game() {
     setShowWarn(false);
   };
   return (
-    <div className="min-h-screen flex flex-col items-center justify-between gap-8 bg-gradient-to-b from-[#1f3756] to-[#141539] text-white p-4">
+    <div className="h-screen flex flex-col items-center justify-between gap-8 bg-gradient-to-b from-[#1f3756] to-[#141539] text-white p-4">
       {/* ScoreBoard displays the current scores */}
       <ScoreBoard />
       {isLoading ? (

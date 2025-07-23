@@ -5,9 +5,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white p-4 w-full fixed top-0 z-50">
+    <nav className="bg-transparent text-white p-4 w-full fixed top-0 z-50">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">RPS Game</h1>
+        <Link className="text-2xl font-bold hover:underline hidden sm:block" to={"/"}>
+          RPS Game
+        </Link>
         <button className="md:hidden text-2xl" onClick={() => setIsOpen(!isOpen)}>
           ☰
         </button>
@@ -36,6 +38,9 @@ export default function Navbar() {
               </Link>
             </li>
           ))}
+          <Link className="block hover:underline" to={"/"}>
+            RPS Game
+          </Link>
         </ul>
       )}
     </nav>

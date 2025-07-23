@@ -41,28 +41,46 @@ export default function Result() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-between p-4 space-y-6 overflow-hidden">
+    <div className="relative bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-between p-4 space-y-4 overflow-hidden">
       {/* animations */}
       {renderAnimation()}
 
       <ScoreBoard />
 
-      <div className="flex justify-center space-x-20 z-10">
-        <>
-          <DropInIcon
-            label="You Picked"
-            icon={userData.icon}
-            color={userData.color}
-            delay={0}
-          />
+      <div className="flex flex-row items-center justify-center space-x-20 space-y-0 z-10">
+        {/* DropIcon کاربر */}
+        <DropInIcon
+          label="You Picked"
+          icon={userData.icon}
+          color={userData.color}
+          delay={0}
+          order=""
+        />
 
-          <DropInIcon
-            label="The House Picked"
-            icon={computerData.icon}
-            color={computerData.color}
-            delay={1}
-          />
-        </>
+        {/* عنوان نتیجه */}
+        <motion.h2
+          variants={
+            result === "You Won!"
+              ? winVariants
+              : result === "You Lose!"
+              ? loseVariants
+              : drawVariants
+          }
+          initial="hidden"
+          animate="visible"
+          className="text-5xl sm:text-6xl font-extrabold uppercase hidden sm:block"
+        >
+          {result}
+        </motion.h2>
+
+        {/* DropIcon کامپیوتر */}
+        <DropInIcon
+          label="The House Picked"
+          icon={computerData.icon}
+          color={computerData.color}
+          delay={1}
+          order=""
+        />
       </div>
 
       <motion.h2
@@ -75,7 +93,7 @@ export default function Result() {
         }
         initial="hidden"
         animate="visible"
-        className="sm:text-6xl text-5xl font-extrabold uppercase z-10"
+        className="text-5xl sm:text-6xl font-extrabold uppercase sm:hidden"
       >
         {result}
       </motion.h2>

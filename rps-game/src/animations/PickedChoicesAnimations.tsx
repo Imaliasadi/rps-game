@@ -5,6 +5,7 @@ interface Props {
   icon: string;
   label: string;
   color: string;
+  order: string;
   delay?: number;
   isWinner?: boolean;
 }
@@ -13,11 +14,12 @@ export default function DropInIcon({
   icon,
   label,
   color,
+  order,
   delay = 0,
   isWinner = false,
 }: Props) {
   return (
-    <div className="text-center">
+    <div className={`text-center ${order}`}>
       <p className="text-xl font-bold mb-2 uppercase">{label}</p>
       <div className="bg-blue-950 rounded-full w-fit h-fit">
         <motion.div
