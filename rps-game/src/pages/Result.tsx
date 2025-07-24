@@ -48,7 +48,7 @@ export default function Result() {
       <ScoreBoard />
 
       <div className="flex flex-row items-center justify-center space-x-20 space-y-0 z-10">
-        {/* DropIcon کاربر */}
+        {/* DropIcon user*/}
         <DropInIcon
           label="You Picked"
           icon={userData.icon}
@@ -57,7 +57,7 @@ export default function Result() {
           order=""
         />
 
-        {/* عنوان نتیجه */}
+        {/* result */}
         <motion.h2
           variants={
             result === "You Won!"
@@ -73,7 +73,7 @@ export default function Result() {
           {result}
         </motion.h2>
 
-        {/* DropIcon کامپیوتر */}
+        {/* DropIcon house*/}
         <DropInIcon
           label="The House Picked"
           icon={computerData.icon}

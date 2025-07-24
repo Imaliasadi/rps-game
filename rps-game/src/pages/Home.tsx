@@ -32,6 +32,12 @@ export default function Home() {
             >
               Login
             </Link>
+            <Link
+              to="/signup"
+              className="bg-gray-600 px-6 py-3 rounded text-white hover:bg-gray-700 transition"
+            >
+              Sign Up
+            </Link>
           </div>
         </motion.div>
       </div>

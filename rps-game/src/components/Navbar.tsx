@@ -14,7 +14,7 @@ export default function Navbar() {
           RPS Game
         </Link>
 
-        {/* دکمه منو با انیمیشن همبرگر به ضربدر */}
+        {/* menu button transfers to a x */}
         <button
           className="md:hidden w-8 h-8 z-50 absolute right-0 top-1"
           onClick={() => setIsOpen(!isOpen)}
@@ -45,7 +45,7 @@ export default function Navbar() {
           />
         </button>
 
-        {/* منوی دسکتاپ */}
+        {/* desktop menu */}
         <ul className="hidden md:flex space-x-4">
           {navLinks.map((path) => (
             <li key={path}>
@@ -57,7 +57,7 @@ export default function Navbar() {
         </ul>
       </div>
 
-      {/* منوی موبایل */}
+      {/*mobile menu*/}
       <AnimatePresence>
         {isOpen && (
           <motion.div
