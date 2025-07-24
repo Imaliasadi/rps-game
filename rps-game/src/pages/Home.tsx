@@ -1,11 +1,9 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
 
 export default function Home() {
   return (
     <>
-      <Navbar />
       <div className="min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-center">
         <motion.h1
           className="sm:text-4xl font-bold mb-8"
