@@ -29,7 +29,7 @@ export default function GoogleAuthButton() {
     <button
       onClick={handleGoogleLogin}
       disabled={loading}
-      className="p-3 rounded-2xl mx-auto mt-3 bg-white text-black hover:bg-gray-100 flex items-center justify-center gap-2 border border-gray-300 shadow-sm"
+      className="p-3 rounded-2xl mx-auto mt-3 text-sm bg-white text-black hover:bg-gray-400 flex items-center justify-center gap-2 border border-gray-300 shadow-sm cursor-pointer"
     >
       <FcGoogle className="text-xl" />
       {loading ? "Signing in..." : "Continue with Google"}

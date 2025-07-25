@@ -57,7 +57,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white shadow-lg rounded-xl space-y-4">
+    <div className="max-w-md mx-auto mt-10 p-6 bg-cyan-700 shadow-lg rounded-xl space-y-4">
       <h2 className="text-2xl font-bold text-center">Create Account</h2>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -87,7 +87,7 @@ const SignUp = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md cursor-pointer"
         >
           Sign Up
         </button>
