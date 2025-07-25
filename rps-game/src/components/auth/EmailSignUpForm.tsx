@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { auth } from "../../data/fireBase";
+import { auth } from "../../firebase/fireBase";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 // Validation schema with zod
