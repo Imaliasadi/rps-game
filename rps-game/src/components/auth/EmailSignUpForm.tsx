@@ -97,7 +97,7 @@ const SignUp = () => {
         <div className="text-green-600 text-center font-medium">{successMessage}</div>
       )}
 
-      {firebaseError && (
+      {firebaseError && !successMessage && (
         <div className="text-red-500 text-center font-medium">{firebaseError}</div>
       )}
     </div>
