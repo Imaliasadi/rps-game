@@ -7,6 +7,7 @@ import { FaUserCircle } from "react-icons/fa";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const auth = getAuth();
 
@@ -14,15 +15,17 @@ export default function Navbar() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-
     return () => unsubscribe();
   }, []);
 
-  const navLinks = user ? ["game", "profile"] : ["login", "signup", "game"];
+  const navLinks = user ? ["game"] : ["login", "signup", "game"];
 
   const handleSignOut = async () => {
     await signOut(auth);
+    setDropdownOpen(false);
   };
+
+  const displayName = user?.displayName || "Player";
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 p-4 bg-transparent text-white">
@@ -31,7 +34,7 @@ export default function Navbar() {
           RPS Game
         </Link>
 
-        {/* Menu Button */}
+        {/* Menu button (mobile) */}
         <button
           className="md:hidden w-8 h-8 z-50 absolute right-0 top-1"
           onClick={() => setIsOpen(!isOpen)}
@@ -62,7 +65,7 @@ export default function Navbar() {
           />
         </button>
 
-        {/* Desktop Menu */}
+        {/* Desktop menu */}
         <ul className="hidden md:flex space-x-4 items-center">
           {navLinks.map((path) => (
             <li key={path}>
@@ -73,8 +76,11 @@ export default function Navbar() {
           ))}
 
           {user && (
-            <>
-              <Link to="/profile">
+            <div className="relative">
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="flex items-center gap-2 hover:underline"
+              >
                 {user.photoURL ? (
                   <img
                     src={user.photoURL}
@@ -84,19 +90,25 @@ export default function Navbar() {
                 ) : (
                   <FaUserCircle size={24} />
                 )}
-              </Link>
-              <button
-                onClick={handleSignOut}
-                className="text-sm text-red-400 hover:text-red-500 ml-2"
-              >
-                Sign Out
+                <span>{displayName}</span>
               </button>
-            </>
+
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 bg-white text-black rounded shadow p-2 z-50">
+                  <button
+                    onClick={handleSignOut}
+                    className="block px-4 py-2 hover:bg-red-100 text-red-600 rounded"
+                  >
+                    Sign Out
+                  </button>
+                </div>
+              )}
+            </div>
           )}
         </ul>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -118,22 +130,23 @@ export default function Navbar() {
             ))}
 
             {user && (
-              <div className="flex items-center gap-2 mt-4">
-                <Link to="/profile" onClick={() => setIsOpen(false)}>
+              <div className="flex items-center justify-between mt-4">
+                <div className="flex items-center gap-2">
                   {user.photoURL ? (
                     <img
                       src={user.photoURL}
                       alt="profile"
-                      className="w-8 h-8 rounded-full border-2 border-white"
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white"
                     />
                   ) : (
                     <FaUserCircle size={24} />
                   )}
-                </Link>
+                  <span>{displayName}</span>
+                </div>
                 <button
                   onClick={() => {
-                    setIsOpen(false);
                     handleSignOut();
+                    setIsOpen(false);
                   }}
                   className="text-red-400 text-sm hover:text-red-500"
                 >

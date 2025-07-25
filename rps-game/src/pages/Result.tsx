@@ -6,7 +6,7 @@ import { winVariants, loseVariants, drawVariants } from "../animations/HeadAnima
 import WinAnimation from "../animations/winAnimation";
 import LoseAnimation from "../animations/loseAnimation";
 import DrawAnimation from "../animations/drawAnimation";
-import RulesModal from "../components/RulesModal";
+import RulesModal from "../components/Modals/RulesModal";
 import { useState } from "react";
 import DropInIcon from "../animations/PickedChoicesAnimations";
 

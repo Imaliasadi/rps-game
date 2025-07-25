@@ -5,8 +5,8 @@ import { getRandomChoice, winMap } from "../utiles/GameLogic";
 import { type Choice } from "../data/choices";
 import Loading from "../components/Loading";
 import { useState } from "react";
-import RulesModal from "../components/RulesModal";
-import WarningModal from "../components/WarningModal";
+import RulesModal from "../components/Modals/RulesModal";
+import WarningModal from "../components/Modals/ResetWarningModal";
 
 /**
  * Game page: main gameplay logic and layout.

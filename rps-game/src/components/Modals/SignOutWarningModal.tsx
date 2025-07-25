@@ -1,11 +1,11 @@
 import { AnimatePresence, motion } from "framer-motion";
-import rulesImage from "../assets/image-rules-bonus.svg";
 
 interface RulesModalProps {
   onClose: () => void;
+  onSignOut: () => void;
 }
 
-export default function RulesModal({ onClose }: RulesModalProps) {
+export default function SignOutWarningModal({ onClose, onSignOut }: RulesModalProps) {
   return (
     <>
       <motion.div
@@ -21,13 +21,20 @@ export default function RulesModal({ onClose }: RulesModalProps) {
           exit={{ scale: 0.7, opacity: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <h2 className="text-2xl font-bold">Rules</h2>
-          <img src={rulesImage} alt="rules" className="w-full" />
+          <h2 className="text-2xl font-bold">
+            Are you sure you want to Sign out from your account?
+          </h2>
           <button
-            onClick={onClose}
+            onClick={onSignOut}
             className="text-red-500 font-bold border-2 border-red-500 rounded px-4 py-1 hover:bg-red-500 hover:text-white transition"
           >
-            Close
+            Yes sign out of my account
+          </button>
+          <button
+            onClick={onClose}
+            className=" font-bold border-2 border-green-500 rounded px-4 py-1 hover:bg-black hover:text-white transition"
+          >
+            stay Signed in
           </button>
         </motion.div>
       </motion.div>
