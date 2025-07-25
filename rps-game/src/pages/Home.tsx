@@ -1,7 +1,11 @@
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase/fireBase";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 export default function Home() {
+  const [user] = useAuthState(auth);
+
   return (
     <>
       <div className="min-h-screen bg-gradient-to-b from-[#1f3756] to-[#141539] text-white flex flex-col items-center justify-center">
@@ -20,24 +24,29 @@ export default function Home() {
           transition={{ delay: 0.5, duration: 1 }}
         >
           <div className="flex content-between gap-4">
-            <Link
-              to="/game"
-              className="bg-indigo-600 px-6 py-3 rounded text-white hover:bg-indigo-700 transition"
-            >
-              Start Game
-            </Link>
-            <Link
-              to="/login"
-              className="bg-gray-600 px-6 py-3 rounded text-white hover:bg-gray-700 transition"
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="bg-gray-600 px-6 py-3 rounded text-white hover:bg-gray-700 transition"
-            >
-              Sign Up
-            </Link>
+            {user ? (
+              <Link
+                to="/game"
+                className="bg-indigo-600 px-6 py-3 rounded text-white hover:bg-indigo-700 transition"
+              >
+                Start Game
+              </Link>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="bg-gray-600 px-6 py-3 rounded text-white hover:bg-gray-700 transition"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="bg-gray-600 px-6 py-3 rounded text-white hover:bg-gray-700 transition"
+                >
+                  Sign Up
+                </Link>
+              </>
+            )}
           </div>
         </motion.div>
       </div>

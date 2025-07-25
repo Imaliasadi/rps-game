@@ -5,6 +5,7 @@ import Game from "./pages/Game";
 import SignUp from "./pages/SignUp";
 import Result from "./pages/Result";
 import Layout from "./Layout";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -13,8 +14,22 @@ function App() {
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<SignUp />} />
-        <Route path="game" element={<Game />} />
-        <Route path="game/result" element={<Result />} />
+        <Route
+          path="game"
+          element={
+            <PrivateRoute>
+              <Game />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="game/result"
+          element={
+            <PrivateRoute>
+              <Result />
+            </PrivateRoute>
+          }
+        />
       </Route>
     </Routes>
   );
