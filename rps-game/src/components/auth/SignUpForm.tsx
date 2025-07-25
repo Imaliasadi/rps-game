@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { auth } from "../data/fireBase";
+import { auth } from "../../data/fireBase";
 import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 // Validation schema with zod
@@ -12,6 +12,7 @@ const formSchema = z.object({
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")
+    .max(16, "Maximum password is 16 characters")
     .regex(/[a-z]/, "Must contain a lowercase letter")
     .regex(/[A-Z]/, "Must contain an uppercase letter")
     .regex(/[0-9]/, "Must contain a number")
@@ -47,7 +48,7 @@ const SignUp = () => {
       await sendEmailVerification(userCredential.user);
 
       setSuccessMessage(
-        "Registration successful! Please check your email to verify your account."
+        "Registration successful! Please check your email box to verify your account."
       );
     } catch (error) {
       if (error instanceof ErrorEvent) setFirebaseError(error.message);
