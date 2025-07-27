@@ -19,13 +19,15 @@ export default function Navbar() {
   }, []);
 
   const navLinks = user ? ["game"] : ["login", "signup", "game"];
+  const displayName = user?.displayName || "Player";
 
   const handleSignOut = async () => {
-    await signOut(auth);
-    setDropdownOpen(false);
+    const confirmLogout = window.confirm("Are you sure you want to sign out?");
+    if (confirmLogout) {
+      await signOut(auth);
+      setDropdownOpen(false);
+    }
   };
-
-  const displayName = user?.displayName || "Player";
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 p-4 bg-transparent text-white">
@@ -34,7 +36,7 @@ export default function Navbar() {
           RPS Game
         </Link>
 
-        {/* Menu button (mobile) */}
+        {/* Mobile menu button */}
         <button
           className="md:hidden w-8 h-8 z-50 absolute right-0 top-1"
           onClick={() => setIsOpen(!isOpen)}
@@ -93,16 +95,24 @@ export default function Navbar() {
                 <span>{displayName}</span>
               </button>
 
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 bg-white text-black rounded shadow p-2 z-50">
-                  <button
-                    onClick={handleSignOut}
-                    className="block px-4 py-2 hover:bg-red-100 text-red-600 rounded"
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 bg-white text-black rounded shadow p-2 z-50"
                   >
-                    Sign Out
-                  </button>
-                </div>
-              )}
+                    <button
+                      onClick={handleSignOut}
+                      className="block px-4 py-2 hover:bg-red-100 text-red-600 rounded"
+                    >
+                      Sign Out
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           )}
         </ul>
@@ -145,8 +155,8 @@ export default function Navbar() {
                 </div>
                 <button
                   onClick={() => {
-                    handleSignOut();
                     setIsOpen(false);
+                    handleSignOut();
                   }}
                   className="text-red-400 text-sm hover:text-red-500"
                 >
