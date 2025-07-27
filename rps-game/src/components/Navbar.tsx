@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getAuth, onAuthStateChanged, signOut, type User } from "firebase/auth";
 import { FaUserCircle } from "react-icons/fa";
+import { toast } from "sonner";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
   const auth = getAuth();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      setUser(currentUser); // stated logged in user
     });
     return () => unsubscribe();
   }, []);
@@ -21,12 +23,32 @@ export default function Navbar() {
   const navLinks = user ? ["game"] : ["login", "signup", "game"];
   const displayName = user?.displayName || "Player";
 
-  const handleSignOut = async () => {
-    const confirmLogout = window.confirm("Are you sure you want to sign out?");
-    if (confirmLogout) {
-      await signOut(auth);
-      setDropdownOpen(false);
-    }
+  const confirmSignOut = () => {
+    toast.custom((t) => (
+      <div className="bg-white p-4 rounded-xl shadow-xl w-[300px] flex flex-col gap-4">
+        <h3 className="text-lg font-semibold">Are you sure?</h3>
+        <p className="text-sm text-neutral-600">Do you really want to sign out?</p>
+        <div className="flex justify-end gap-2 mt-2">
+          <button
+            onClick={() => toast.dismiss(t)}
+            className="px-3 py-1 text-sm rounded-md border cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={() => {
+              toast.dismiss(t);
+              signOut(auth);
+              toast.success("Signed out successfully.");
+              navigate("/");
+            }}
+            className="px-3 py-1 text-sm bg-red-600 text-white rounded-md hover:bg-red-700 cursor-pointer"
+          >
+            Sign out
+          </button>
+        </div>
+      </div>
+    ));
   };
 
   return (
@@ -71,7 +93,7 @@ export default function Navbar() {
         <ul className="hidden md:flex space-x-4 items-center">
           {navLinks.map((path) => (
             <li key={path}>
-              <Link to={`/${path}`} className="hover:underline">
+              <Link to={`/${path}`} className="hover:underline cursor-pointer">
                 {path.charAt(0).toUpperCase() + path.slice(1)}
               </Link>
             </li>
@@ -81,7 +103,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="flex items-center gap-2 hover:underline"
+                className="flex items-center gap-2 hover:underline cursor-pointer"
               >
                 {user.photoURL ? (
                   <img
@@ -105,8 +127,8 @@ export default function Navbar() {
                     className="absolute right-0 mt-2 bg-white text-black rounded shadow p-2 z-50"
                   >
                     <button
-                      onClick={handleSignOut}
-                      className="block px-4 py-2 hover:bg-red-100 text-red-600 rounded"
+                      onClick={confirmSignOut}
+                      className="block px-4 py-2 hover:bg-red-100 text-red-600 rounded cursor-pointer"
                     >
                       Sign Out
                     </button>
@@ -156,7 +178,7 @@ export default function Navbar() {
                 <button
                   onClick={() => {
                     setIsOpen(false);
-                    handleSignOut();
+                    confirmSignOut();
                   }}
                   className="text-red-400 text-sm hover:text-red-500"
                 >
