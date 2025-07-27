@@ -1,12 +1,8 @@
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-/**
- * ScoreBoard component displays and manages the user's and house's scores.
- * Scores are persisted in localStorage and synchronized across tabs.
- */
 function ScoreBoard() {
-  // Initialize scores from localStorage or default to 0
   const [youScore, setYouScore] = useState<number>(() => {
     const stored = localStorage.getItem("youScore");
     return stored ? parseInt(stored) : 0;
@@ -17,15 +13,11 @@ function ScoreBoard() {
     return stored ? parseInt(stored) : 0;
   });
 
-  // Get the result from navigation state (if available)
   const { state } = useLocation();
   const result = state?.result;
 
-  // Update scores when a new result is available
   useEffect(() => {
     if (!result) return;
-
-    // Check if this result has already been processed
     if (sessionStorage.getItem("scoreProcessed") === result) return;
 
     let newYouScore = parseInt(localStorage.getItem("youScore") || "0");
@@ -40,10 +32,9 @@ function ScoreBoard() {
     localStorage.setItem("youScore", newYouScore.toString());
     localStorage.setItem("houseScore", newHouseScore.toString());
 
-    // Mark this result as processed
     sessionStorage.setItem("scoreProcessed", result);
   }, [result]);
-  // Listen for score changes from other tabs/windows
+
   useEffect(() => {
     const syncScore = () => {
       setYouScore(parseInt(localStorage.getItem("youScore") || "0"));
@@ -53,27 +44,76 @@ function ScoreBoard() {
     return () => window.removeEventListener("storage", syncScore);
   }, []);
 
-  return (
-    <div className="flex justify-between items-center w-[90%] max-w-[700px] border-4 border-gray-500 rounded-lg px-4 py-2 bg-transparent">
-      {/* Game title */}
-      <div className="flex flex-col text-left uppercase text-white font-bold text-xl leading-5">
-        <span>Rock</span>
-        <span>Paper</span>
-        <span>Scissors</span>
-        <span>Lizard</span>
-        <span>Spock</span>
-      </div>
+  const scoreVariants = {
+    initial: (direction: "up" | "down") => ({
+      opacity: 0,
+      y: direction === "up" ? 10 : -10,
+      scale: 0.9,
+    }),
+    animate: { opacity: 1, y: 0, scale: 1 },
+    exit: (direction: "up" | "down") => ({
+      opacity: 0,
+      y: direction === "up" ? -10 : 10,
+      scale: 0.9,
+    }),
+  };
 
-      {/* Score display */}
-      <div className="bg-white rounded-lg flex flex-col items-center px-6 py-2 text-black">
-        <span className="text-gray-500 text-sm font-bold tracking-widest uppercase">
-          Score Board
-        </span>
-        <div className="text-xl font-bold">
-          You {youScore} : {houseScore} House
+  return (
+    <motion.div
+      initial={{ y: -200, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ type: "spring", stiffness: 120, damping: 12 }}
+      className="w-full justify-center flex"
+    >
+      <div className="flex justify-between items-center w-[90%] max-w-[700px] border-4 border-gray-500 rounded-lg px-4 py-2 bg-transparent">
+        {/* Game title */}
+        <div className="flex flex-col text-left uppercase text-white font-bold text-xl leading-5">
+          <span>Rock</span>
+          <span>Paper</span>
+          <span>Scissors</span>
+          <span>Lizard</span>
+          <span>Spock</span>
+        </div>
+
+        {/* Score display */}
+        <div className="bg-white rounded-lg flex flex-col items-center px-6 py-2 text-black">
+          <span className="text-gray-500 text-sm font-bold tracking-widest uppercase mb-1">
+            Score Board
+          </span>
+
+          {/* Animated score */}
+          <div className="text-xl font-bold flex gap-1">
+            <AnimatePresence mode="wait" custom="up">
+              <motion.span
+                key={`you-${youScore}`}
+                custom="up"
+                variants={scoreVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+              >
+                You {youScore}
+              </motion.span>
+            </AnimatePresence>
+            <span>:</span>
+            <AnimatePresence mode="wait" custom="up">
+              <motion.span
+                key={`house-${houseScore}`}
+                custom="up"
+                variants={scoreVariants}
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                transition={{ duration: 0.3 }}
+              >
+                {houseScore} House
+              </motion.span>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

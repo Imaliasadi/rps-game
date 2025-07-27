@@ -58,20 +58,30 @@ export default function Result() {
         />
 
         {/* result */}
-        <motion.h2
-          variants={
-            result === "You Won!"
-              ? winVariants
-              : result === "You Lose!"
-              ? loseVariants
-              : drawVariants
-          }
-          initial="hidden"
-          animate="visible"
-          className="text-5xl sm:text-6xl font-extrabold uppercase hidden sm:block"
-        >
-          {result}
-        </motion.h2>
+        <div className="flex justify-center flex-col gap-3">
+          <motion.h2
+            variants={
+              result === "You Won!"
+                ? winVariants
+                : result === "You Lose!"
+                ? loseVariants
+                : drawVariants
+            }
+            initial="hidden"
+            animate="visible"
+            className="text-5xl sm:text-6xl font-extrabold uppercase hidden sm:block"
+          >
+            {result}
+          </motion.h2>
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => navigate("/game")}
+            className="bg-white text-black font-semibold px-6 py-3 rounded shadow mt-4 z-10 hidden sm:block"
+          >
+            Play Again
+          </motion.button>
+        </div>
 
         {/* DropIcon house*/}
         <DropInIcon
@@ -97,14 +107,15 @@ export default function Result() {
       >
         {result}
       </motion.h2>
-
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        onClick={() => navigate("/game")}
+        className="bg-white text-black font-semibold px-6 py-3 rounded shadow mt-4 z-10 sm:hidden"
+      >
+        Play Again
+      </motion.button>
       <div className="flex content-between gap-3">
-        <button
-          className="bg-transparent text-white px-4 py-2 rounded hover:bg-white hover:text-black transition border-2 border-amber-50 z-10"
-          onClick={() => navigate("/game")}
-        >
-          Play Again
-        </button>
         <button
           onClick={() => setShowModal(true)}
           className="bg-transparent text-white px-4 py-2 rounded hover:bg-white hover:text-black transition border-2 border-amber-50"

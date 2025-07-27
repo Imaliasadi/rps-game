@@ -7,6 +7,7 @@ import Loading from "../components/Loading";
 import { useState } from "react";
 import RulesModal from "../components/Modals/RulesModal";
 import WarningModal from "../components/Modals/ResetWarningModal";
+import { motion } from "framer-motion";
 
 /**
  * Game page: main gameplay logic and layout.
@@ -48,7 +49,15 @@ export default function Game() {
       {isLoading ? (
         <Loading message="THE HOUSE IS CHOOSING..." />
       ) : (
-        <GameBoard playRound={playRound} />
+        <motion.div
+          className="sm:text-4xl text-center font-bold mb-8 tracking-wide"
+          initial={{ opacity: 0, scale: 0.5, filter: "blur(10px)" }}
+          animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+          style={{ textShadow: "0 0 15px #4f83ff" }}
+        >
+          <GameBoard playRound={playRound} />
+        </motion.div>
       )}
 
       {/* Button to reset the score */}
