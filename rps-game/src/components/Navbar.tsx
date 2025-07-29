@@ -128,7 +128,7 @@ export default function Navbar() {
                   >
                     <button
                       onClick={confirmSignOut}
-                      className="block px-4 py-2 hover:bg-red-100 text-red-600 rounded cursor-pointer"
+                      className="block text-sm px-4 py-2 hover:bg-red-100 text-red-600 rounded cursor-pointer text-nowrap"
                     >
                       Sign Out
                     </button>

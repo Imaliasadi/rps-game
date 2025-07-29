@@ -18,7 +18,7 @@ type Props = {
 export default function ChoiceButton({ icon, label, onClick, color, position }: Props) {
   return (
     <button
-      className={`sm:w-32 sm:h-32 w-25 h-25 shadow-lg items-center hover:-translate-y-4 hover:scale-105 transition-transform flex justify-center rounded-full sm:border-13 border-10 inset-shadow bg-white ${color} ${position}`}
+      className={`sm:w-32 sm:h-32 w-25 h-25 shadow-lg items-center hover:-translate-y-4 hover:scale-105 transition-transform flex justify-center rounded-full sm:border-13 border-10 inset-shadow bg-white ${color} ${position} cursor-pointer`}
       onClick={onClick}
       aria-label={label}
     >
