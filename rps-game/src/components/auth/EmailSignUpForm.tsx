@@ -1,4 +1,3 @@
-// src/pages/SignUp.tsx
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -48,7 +47,7 @@ const SignUp = () => {
       await sendEmailVerification(userCredential.user);
 
       setSuccessMessage(
-        "Registration successful! Please check your email box to verify your account, then comeback and login with your email and password. "
+        "Registration successful! Please check your email box to verify your account (don't forget spam folder), then comeback and login with your email and password. "
       );
     } catch (error) {
       if (error instanceof Error) setFirebaseError(error.message);
