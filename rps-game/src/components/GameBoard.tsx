@@ -1,10 +1,6 @@
 import ChoiceButton from "./ChoiceButton";
 import { choices, type Choice } from "../data/choices";
 
-/**
- * GameBoard component arranges all ChoiceButtons in a pentagon layout.
- * Receives playRound callback from parent to handle user selection.
- */
 interface Props {
   playRound: (choice: Choice) => void;
 }
