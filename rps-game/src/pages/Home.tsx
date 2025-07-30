@@ -44,7 +44,7 @@ export default function Home() {
                   },
                 },
               }}
-              whileHover={{ scale: 1.2 }}
+              whileHover={{ scale: 1.2, rotate: 15, y: -10 }}
               title={label}
             >
               {emoji}

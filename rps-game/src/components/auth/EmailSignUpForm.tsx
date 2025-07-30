@@ -51,7 +51,7 @@ const SignUp = () => {
         "Registration successful! Please check your email box to verify your account, then comeback and login with your email and password. "
       );
     } catch (error) {
-      if (error instanceof ErrorEvent) setFirebaseError(error.message);
+      if (error instanceof Error) setFirebaseError(error.message);
       else setFirebaseError("somthing went wrong");
     }
   };

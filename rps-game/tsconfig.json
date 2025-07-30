@@ -5,6 +5,13 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["*"]
-    }
-  }
+    },
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "typeRoots": ["src/types", "node_modules/@types"],
+    "outDir": "/dist"
+  },
+  "include": ["src/**/*", "src/types/**/*"]
 }
