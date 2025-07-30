@@ -8,7 +8,7 @@ import LoseAnimation from "../animations/loseAnimation";
 import DrawAnimation from "../animations/drawAnimation";
 import RulesModal from "../components/Modals/RulesModal";
 import { useState } from "react";
-import DropInIcon from "../animations/PickedChoicesAnimations";
+import DropInIcon from "../animations/DropInIcon";
 
 interface LocationState {
   userChoice: Choice;
@@ -47,14 +47,13 @@ export default function Result() {
 
       <ScoreBoard />
 
-      <div className="flex flex-row items-center justify-center space-x-20 space-y-0 z-10">
+      <div className="flex flex-row items-center justify-center sm:space-x-20 space-x-10 space-y-0 z-10">
         {/* DropIcon user*/}
         <DropInIcon
           label="You Picked"
           icon={userData.icon}
           color={userData.color}
           delay={0}
-          order=""
         />
 
         {/* result */}
@@ -69,7 +68,7 @@ export default function Result() {
             }
             initial="hidden"
             animate="visible"
-            className="text-5xl sm:text-6xl font-extrabold uppercase hidden sm:block"
+            className="text-6xl font-extrabold uppercase hidden sm:block"
           >
             {result}
           </motion.h2>
@@ -89,7 +88,6 @@ export default function Result() {
           icon={computerData.icon}
           color={computerData.color}
           delay={1}
-          order=""
         />
       </div>
 
@@ -103,7 +101,7 @@ export default function Result() {
         }
         initial="hidden"
         animate="visible"
-        className="text-5xl sm:text-6xl font-extrabold uppercase sm:hidden"
+        className="text-5xl font-extrabold uppercase sm:hidden"
       >
         {result}
       </motion.h2>

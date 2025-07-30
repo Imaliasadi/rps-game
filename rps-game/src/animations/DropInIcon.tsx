@@ -5,7 +5,6 @@ interface Props {
   icon: string;
   label: string;
   color: string;
-  order: string;
   delay?: number;
   isWinner?: boolean;
 }
@@ -14,13 +13,12 @@ export default function DropInIcon({
   icon,
   label,
   color,
-  order,
   delay = 0,
   isWinner = false,
 }: Props) {
   return (
-    <div className={`text-center ${order}`}>
-      <p className="text-xl font-bold mb-2 uppercase">{label}</p>
+    <div className={`text-center`}>
+      <p className="sm:text-xl text-sm text-nowrap font-bold mb-2 uppercase">{label}</p>
       <div className="bg-blue-950 rounded-full w-fit h-fit">
         <motion.div
           initial={{ y: 200, scale: 10, opacity: 0 }}
@@ -36,7 +34,7 @@ export default function DropInIcon({
           <img
             src={icon}
             alt={label}
-            className={`w-24 h-24 ${isWinner ? "animate-pulse" : ""}`}
+            className={`sm:w-24 sm:h-24 w-18 h-18 ${isWinner ? "animate-pulse" : ""}`}
           />
         </motion.div>
       </div>

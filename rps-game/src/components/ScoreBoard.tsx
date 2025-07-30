@@ -67,7 +67,7 @@ function ScoreBoard() {
     >
       <div className="flex justify-between items-center w-[90%] max-w-[700px] border-4 border-gray-500 rounded-lg px-4 py-2 bg-transparent">
         {/* Game title */}
-        <div className="flex flex-col text-left uppercase text-white font-bold text-xl leading-5">
+        <div className="flex flex-col text-left uppercase text-white font-bold sm:text-xl text-sm leading-5">
           <span>Rock</span>
           <span>Paper</span>
           <span>Scissors</span>
@@ -77,12 +77,12 @@ function ScoreBoard() {
 
         {/* Score display */}
         <div className="bg-white rounded-lg flex flex-col items-center px-6 py-2 text-black">
-          <span className="text-gray-500 text-sm font-bold tracking-widest uppercase mb-1">
+          <span className="text-gray-500 sm:text-sm text-[10px] font-bold tracking-widest uppercase mb-1">
             Score Board
           </span>
 
           {/* Animated score */}
-          <div className="text-xl font-bold flex gap-1">
+          <div className="sm:text-xl text-sm font-bold flex gap-1">
             <AnimatePresence mode="wait" custom="up">
               <motion.span
                 key={`you-${youScore}`}
