@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { auth } from "../../firebase/fireBase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const EmailPasswordLogin = () => {
   const [email, setEmail] = useState("");
@@ -17,8 +18,15 @@ const EmailPasswordLogin = () => {
     setError("");
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      navigate("/game");
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      if (user.emailVerified) {
+        navigate("/game");
+      } else {
+        //email isn't verified
+        await signOut(auth);
+        toast.error("Please verify your email address before logging in.");
+      }
     } catch (err) {
       if (err instanceof Error) setError(err.message);
       else setError("somthing went wrong");

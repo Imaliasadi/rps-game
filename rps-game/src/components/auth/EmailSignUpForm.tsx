@@ -3,7 +3,13 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { auth } from "../../firebase/fireBase";
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  signOut,
+} from "firebase/auth";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 // Validation schema with zod
 const formSchema = z.object({
@@ -21,6 +27,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -46,9 +53,13 @@ const SignUp = () => {
       // Send verification email
       await sendEmailVerification(userCredential.user);
 
-      setSuccessMessage(
-        "Registration successful! Please check your email box to verify your account (don't forget spam folder), then comeback and login with your email and password. "
+      // immediate sigin out user
+      await signOut(auth);
+
+      toast.success(
+        "Please check your mailbox to verify your account then contonue in login page (don't forget to check the spam folder)"
       );
+      navigate("/login");
     } catch (error) {
       if (error instanceof Error) setFirebaseError(error.message);
       else setFirebaseError("somthing went wrong");
